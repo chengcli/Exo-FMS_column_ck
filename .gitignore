@@ -33,3 +33,7 @@
 
 # CIA files
 *.cia
+
+# build files
+build*
+
