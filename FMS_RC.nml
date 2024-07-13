@@ -3,7 +3,7 @@
 sw_scheme = 'sw_direct'
 lw_scheme = 'lw_AA_L'
 opac_scheme = 'ck'
-adj_scheme = 'Ray_dry'
+adj_scheme = 'none'
 CE_scheme = 'interp'
 
 nb = 32
@@ -25,7 +25,7 @@ b_sh = 'hybrid_sigma/Hybrid_sigma_grid_b_54.txt'
 
 pref = 1.0e8
 
-t_step = 30.0
+t_step = 0.0
 nstep = 10000
 Rd_air = 3573.0
 cp_air = 12698.0

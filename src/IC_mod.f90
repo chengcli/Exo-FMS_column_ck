@@ -55,6 +55,9 @@ contains
       call Mayne_2014_IC(nlay,pl,Tl)
     case(6)
       call CAMEMBERT_IC(nlay,pl,Tl)
+    case(-1)
+      ! Nothing
+      print *, "Doing nothing"
     case default
       print*, 'Invalid IC integer in IC_mod, stopping'
       stop

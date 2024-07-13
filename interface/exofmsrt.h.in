@@ -7,37 +7,31 @@
 #define FEXPAND1(fname) @F2C_FEXPAND1@
 #define FEXPAND2(mname,fname) @F2C_FEXPAND2@
 
-#define ck_opacity_ FEXPAND2(ck_opacity_mod, ck_opacity)
-#define init_arrays_ FEXPAND1(init_arrays)
+#define get_array_sizes_ FEXPAND1(get_array_sizes)
+#define get_temp_lyr_ FEXPAND1(get_temp_lyr)
+#define get_pres_lvl_ FEXPAND1(get_pres_lvl)
+#define get_vmr_lyr_ FEXPAND1(get_vmr_lyr)
+#define get_netf_lvl_ FEXPAND1(get_netf_lvl)
 #define call_exo_fms_rt_ FEXPAND2(exofms, call_exo_fms_rc)
+#define finalize_ FEXPAND1(finalize)
 
 #ifdef __cplusplus
 extern "C" {
 #endif 
 
-void ck_opacity_(int *nlay, 
-                 int *n_ck, 
-                 int *n_CIA, 
-                 int *n_Ray, 
-                 int *n_b, 
-                 int *n_g, 
-                 int *wl_in, 
-                 double *grav_in, 
-                 double *T_in,
-                 double *p_in,
-                 double *pe_in,
-                 double *mu_in,
-                 int *n_sp,
-                 char *sp_list,
-                 double *VMR, 
-                 double *k_tot,  /* output */
-                 double *a_tot,  /* output */
-                 double *g_tot   /* output */
-                 );
+void get_array_sizes_(int *nlay,
+                      int *nsp,
+                      int *ng,
+                      int *nb);
 
-void init_arrays_();
-void exo_fms_rt_();
-void call_exo_fms_rt_();
+void get_temp_lyr_(double* &ptr_tl);
+void get_pres_lvl_(double* &ptr_pe);
+void get_vmr_lyr_(double* &ptr_vmr);
+void get_netf_lvl_(double* &ptr_netf);
+
+void call_exo_fms_rt_(int *nstep, int *iIC);
+
+void finalize_();
 
 #ifdef __cplusplus
 } //  extern "C"

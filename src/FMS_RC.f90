@@ -17,19 +17,19 @@ module exofms
   !! Precision variables
   integer, parameter :: dp = REAL64
 
-  real(dp), allocatable, dimension(:) :: Tl, pe
-  real(dp), allocatable, dimension(:) :: dT_rad, dT_conv, net_F
-  real(dp), allocatable, dimension(:,:) :: VMR
-  real(dp), allocatable, dimension(:) :: mu
-  real(dp), allocatable, dimension(:,:,:) :: k_l
-  real(dp), allocatable, dimension(:,:,:) :: tau_e
-  real(dp), allocatable, dimension(:,:,:) :: ssa, gg
+  real(dp), pointer, dimension(:) :: Tl, pe
+  real(dp), pointer, dimension(:) :: dT_rad, dT_conv, net_F
+  real(dp), pointer, dimension(:,:) :: VMR
+  real(dp), pointer, dimension(:) :: mu
+  real(dp), pointer, dimension(:,:,:) :: k_l
+  real(dp), pointer, dimension(:,:,:) :: tau_e
+  real(dp), pointer, dimension(:,:,:) :: ssa, gg
 
-  public :: call_exo_fms_rc
+  logical :: initialized = .False.
 
 contains
 
-subroutine call_exo_fms_rc()
+subroutine call_exo_fms_rc(nstep_in, iIC_in)
   use, intrinsic :: iso_fortran_env
 
   use sw_direct_mod, only : sw_direct
@@ -64,6 +64,9 @@ subroutine call_exo_fms_rc()
 
   use ieee_arithmetic
   implicit none
+
+  ! Number of total steps to run
+  integer, intent(in) :: nstep_in
 
   ! Precision variable
   integer, parameter :: dp = REAL64
@@ -119,7 +122,7 @@ subroutine call_exo_fms_rc()
 
   real(dp), allocatable, dimension(:) :: Kzz 
 
-  integer :: iIC
+  integer :: iIC, iIC_in
   logical :: corr
   real(dp) :: prc
 
@@ -132,6 +135,7 @@ subroutine call_exo_fms_rc()
   character(len=200) :: sw_scheme, lw_scheme, opac_scheme, adj_scheme, CE_scheme
 
   integer :: u_nml
+  logical :: ios
 
   namelist /FMS_RC_nml/ sw_scheme, lw_scheme, opac_scheme, adj_scheme, CE_scheme, nlay, a_sh, b_sh, pref, &
           & t_step, nstep, Rd_air, cp_air, grav, mu_z, Tirr, Tint, k_V, k_IR, fl, met, &
@@ -143,7 +147,14 @@ subroutine call_exo_fms_rc()
   namelist /gw_nml/ gw
 
   !! Read input variables from namelist
+  print *, u_nml, "file before read"
+  inquire(file='FMS_RC.nml', opened=ios)
+  if (ios) then
+    close(unit=u_nml)
+  endif
+
   open(newunit=u_nml, file='FMS_RC.nml', status='old', action='read')
+  print *, u_nml, "file read"
   read(u_nml, nml=FMS_RC_nml)
 
   !! Read the species list and VMR table path
@@ -154,6 +165,7 @@ subroutine call_exo_fms_rc()
   allocate(gw(ng))
   read(u_nml, nml=gw_nml)
   close(u_nml)
+  print *, u_nml, "file closed"
 
   !! Read wavelength and stellar flux in each band file
   allocate(Finc(nb))
@@ -199,12 +211,12 @@ subroutine call_exo_fms_rc()
 
   !! Contruct pressure array [pa] at the levels using the hybrid sigma formula
   ! Reference surface pressure [pa] is pref
-  !! ---------- cli
-  !!allocate(pe(nlev))
-  !!do k = 1, nlev
-  !!  pe(k) = a_hs(k) + b_hs(k)*pref
-  !!end do
-  !! ----------
+  if (initialized .eqv. .False.) then
+    allocate(pe(nlev))
+    do k = 1, nlev
+      pe(k) = a_hs(k) + b_hs(k)*pref
+    end do
+  end if
   pu = pe(1)
 
   !! Pressure at the layers
@@ -215,12 +227,14 @@ subroutine call_exo_fms_rc()
   end do
 
   !! Allocate other arrays we need
-  !! ---------- cli
-  !! allocate(Tl(nlay), dT_rad(nlay), dT_conv(nlay), net_F(nlev))
-  !! allocate(tau_e(ng,nb,nlev), k_l(ng,nb,nlay))
-  !! allocate(ssa(ng,nb,nlay), gg(ng,nb,nlay))
-  !! allocate(VMR(nsp,nlay), mu(nlay))
-  !! ----------
+  if (initialized .eqv. .False.) then
+    allocate(Tl(nlay), dT_rad(nlay), dT_conv(nlay), net_F(nlev))
+    allocate(tau_e(ng,nb,nlev), k_l(ng,nb,nlay))
+    allocate(ssa(ng,nb,nlay), gg(ng,nb,nlay))
+    allocate(VMR(nsp,nlay), mu(nlay))
+    initialized = .True.
+  end if
+
   allocate(alt(nlev), mu_z_eff(nlev), alp(nlev))
   allocate(sw_up(nlev), sw_down(nlev), sw_net(nlev))
   allocate(lw_up(nlev), lw_down(nlev), lw_net(nlev))
@@ -250,7 +264,7 @@ subroutine call_exo_fms_rc()
   fl = 1.0_dp
 
   !! Initial condition T-p profile - see the routine for options
-  call IC_profile(iIC,corr,nlay,pref,pl,k_l(1,1,:),k_l(1,1,:),Tint,mu_z,Tirr,grav,fl,Tl,prc,table_num,met)
+  call IC_profile(iIC_in,corr,nlay,pref,pl,k_l(1,1,:),k_l(1,1,:),Tint,mu_z,Tirr,grav,fl,Tl,prc,table_num,met)
 
   !! Print initial T-p profile
   do i = 1, nlay
@@ -274,7 +288,7 @@ subroutine call_exo_fms_rc()
   !! cpu timer start
   call cpu_time(start)
 
-  do n = 1, nstep
+  do n = 1, nstep_in
 
     net_F(:) = 0.0_dp
     dT_conv(:) = 0.0_dp
