@@ -10,7 +10,26 @@
 ! NOTE: Indexing starts at 1, where 1 is the Top Of Atmosphere level or layer
 !!!
 
-program Exo_FMS_RC
+module exofms
+  use, intrinsic :: iso_fortran_env
+  implicit none
+
+  !! Precision variables
+  integer, parameter :: dp = REAL64
+
+  real(dp), allocatable, dimension(:) :: Tl, pe
+  real(dp), allocatable, dimension(:) :: dT_rad, dT_conv, net_F
+  real(dp), allocatable, dimension(:,:) :: VMR
+  real(dp), allocatable, dimension(:) :: mu
+  real(dp), allocatable, dimension(:,:,:) :: k_l
+  real(dp), allocatable, dimension(:,:,:) :: tau_e
+  real(dp), allocatable, dimension(:,:,:) :: ssa, gg
+
+  public :: call_exo_fms_rc
+
+contains
+
+subroutine call_exo_fms_rc()
   use, intrinsic :: iso_fortran_env
 
   use sw_direct_mod, only : sw_direct
@@ -64,19 +83,24 @@ program Exo_FMS_RC
   integer :: table_num
   real(dp) :: t_step, t_tot
   real(dp) :: mu_z, Tirr, Tint, pref, pu, met, fl
-  real(dp), allocatable, dimension(:) :: Tl, pl, pe, dpe, Finc
-  real(dp), allocatable, dimension(:,:,:) :: k_l
-  real(dp), allocatable, dimension(:,:,:) :: tau_e
-  real(dp), allocatable, dimension(:,:,:) :: ssa, gg
-  real(dp), allocatable, dimension(:) :: dT_rad, dT_conv, net_F
+  !! -------- cli
+  !! real(dp), allocatable, dimension(:) :: Tl, pl, pe, dpe, Finc
+  !! real(dp), allocatable, dimension(:,:,:) :: k_l
+  !! real(dp), allocatable, dimension(:,:,:) :: tau_e
+  !! real(dp), allocatable, dimension(:,:,:) :: ssa, gg
+  !! real(dp), allocatable, dimension(:) :: dT_rad, dT_conv, net_F
+  real(dp), allocatable, dimension(:) :: pl, dpe, Finc
+  !! --------
   real(dp), allocatable, dimension(:) :: gw
   real(dp), allocatable, dimension(:) :: wl_e, wn_e
   real(dp) :: olr, asr
 
   integer :: nsp
   character(len=200) :: VMR_tab_sh
-  real(dp), allocatable, dimension(:,:) :: VMR
-  real(dp), allocatable, dimension(:) :: mu
+  !! -------- cli
+  !! real(dp), allocatable, dimension(:,:) :: VMR
+  !! real(dp), allocatable, dimension(:) :: mu
+  !! --------
   character(len=10), allocatable, dimension(:) :: sp_list
 
   real(dp) :: grav, k_IR, k_V, cp_air, Rd_air, kappa_air
@@ -175,10 +199,12 @@ program Exo_FMS_RC
 
   !! Contruct pressure array [pa] at the levels using the hybrid sigma formula
   ! Reference surface pressure [pa] is pref
-  allocate(pe(nlev))
-  do k = 1, nlev
-    pe(k) = a_hs(k) + b_hs(k)*pref
-  end do
+  !! ---------- cli
+  !!allocate(pe(nlev))
+  !!do k = 1, nlev
+  !!  pe(k) = a_hs(k) + b_hs(k)*pref
+  !!end do
+  !! ----------
   pu = pe(1)
 
   !! Pressure at the layers
@@ -189,10 +215,12 @@ program Exo_FMS_RC
   end do
 
   !! Allocate other arrays we need
-  allocate(Tl(nlay), dT_rad(nlay), dT_conv(nlay), net_F(nlev))
-  allocate(tau_e(ng,nb,nlev), k_l(ng,nb,nlay))
-  allocate(ssa(ng,nb,nlay), gg(ng,nb,nlay))
-  allocate(VMR(nsp,nlay), mu(nlay))
+  !! ---------- cli
+  !! allocate(Tl(nlay), dT_rad(nlay), dT_conv(nlay), net_F(nlev))
+  !! allocate(tau_e(ng,nb,nlev), k_l(ng,nb,nlay))
+  !! allocate(ssa(ng,nb,nlay), gg(ng,nb,nlay))
+  !! allocate(VMR(nsp,nlay), mu(nlay))
+  !! ----------
   allocate(alt(nlev), mu_z_eff(nlev), alp(nlev))
   allocate(sw_up(nlev), sw_down(nlev), sw_net(nlev))
   allocate(lw_up(nlev), lw_down(nlev), lw_net(nlev))
@@ -473,5 +501,6 @@ program Exo_FMS_RC
   print*, n, 'steps took: '
   print '("Time = ",f8.3," seconds.")', finish-start
 
+end subroutine
 
-end program Exo_FMS_RC
+end module

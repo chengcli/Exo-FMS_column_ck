@@ -1,9 +1,9 @@
-# compile the exofmsck module
+# compile the exofmsrt module
 
 string(TOLOWER ${CMAKE_BUILD_TYPE} buildl)
 string(TOUPPER ${CMAKE_BUILD_TYPE} buildu)
 
-set(namel exofmsck)
+set(namel exofmsrt)
 string(TOUPPER ${namel} nameu)
 
 set(_${namel}_src
@@ -29,6 +29,8 @@ set(_${namel}_src
 		lw_VIM_mod.f90
 		lw_Toon_mod.f90
 		lw_disort_ts_mod.f90
+    FMS_RC.f90  
+    fms_rc_mod.f90  
     )
 
 add_library(${namel}_${buildl}
@@ -47,4 +49,4 @@ target_link_libraries(${namel}_${buildl}
     blas
     )
 
-add_library(exofmsck::exofmsckf ALIAS ${namel}_${buildl})
+add_library(exofmsrt::exofmsrtf ALIAS ${namel}_${buildl})

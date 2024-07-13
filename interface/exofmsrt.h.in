@@ -1,0 +1,44 @@
+//! \file exofmsrt.h
+//! \brief ExoFMS-CK C-Interface
+// *****************************************************************************
+
+#pragma once
+
+#define FEXPAND1(fname) @F2C_FEXPAND1@
+#define FEXPAND2(mname,fname) @F2C_FEXPAND2@
+
+#define ck_opacity_ FEXPAND2(ck_opacity_mod, ck_opacity)
+#define init_arrays_ FEXPAND1(init_arrays)
+#define call_exo_fms_rt_ FEXPAND2(exofms, call_exo_fms_rc)
+
+#ifdef __cplusplus
+extern "C" {
+#endif 
+
+void ck_opacity_(int *nlay, 
+                 int *n_ck, 
+                 int *n_CIA, 
+                 int *n_Ray, 
+                 int *n_b, 
+                 int *n_g, 
+                 int *wl_in, 
+                 double *grav_in, 
+                 double *T_in,
+                 double *p_in,
+                 double *pe_in,
+                 double *mu_in,
+                 int *n_sp,
+                 char *sp_list,
+                 double *VMR, 
+                 double *k_tot,  /* output */
+                 double *a_tot,  /* output */
+                 double *g_tot   /* output */
+                 );
+
+void init_arrays_();
+void exo_fms_rt_();
+void call_exo_fms_rt_();
+
+#ifdef __cplusplus
+} //  extern "C"
+#endif 

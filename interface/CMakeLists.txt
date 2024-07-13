@@ -1,24 +1,12 @@
-# Installs exofmsck++ interface
+# Installs exofmsrt++ interface
 
-set(namel "exofmsck++")
-string(TOUPPER ${namel} nameu)
-
-if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-  set(${PROJECT_NAME}_FEXPAND "__ ## mname ## _MOD_ ## fname"
-    CACHE INTERNAL "Fortran name mangling macro")
-elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-  set(${PROJECT_NAME}_FEXPAND "mname ## _mp_ ## fname ## _"
-    CACHE INTERNAL "Fortran name mangling macro")
-else()
-  message(FATAL_ERROR "Unsupported Fortran compiler")
-endif()
+set(namel "${PROJECT_NAME}++")
 
 file(GLOB src_files
     *.cpp
     )
 
 string(TOLOWER ${CMAKE_BUILD_TYPE} buildl)
-string(TOUPPER ${CMAKE_BUILD_TYPE} buildu)
 
 add_library(${namel}_${buildl}
     OBJECT
@@ -36,9 +24,9 @@ target_include_directories(${namel}_${buildl}
     )
 
 target_link_libraries(${namel}_${buildl}
-    exofmsck::exofmsckf
+    ${PROJECT_NAME}::${PROJECT_NAME}f
     )
 
-configure_file(exofmsck.h.in exofmsck.h @ONLY)
+configure_file(${PROJECT_NAME}.h.in ${PROJECT_NAME}.h @ONLY)
 
-add_library(exofmsck::exofmsck++ ALIAS ${namel}_${buildl})
+add_library(${PROJECT_NAME}::${namel} ALIAS ${namel}_${buildl})

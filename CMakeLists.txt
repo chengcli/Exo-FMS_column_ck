@@ -1,12 +1,12 @@
 # This package generates the following targets:
 #   
-#   exofmsckf: libexofmsck_debug.a or libexofmsckf_release.a
-#   exofmsck++: OBJECT library
+#   exofmsrtf: libexofmsrt_debug.a or libexofmsrtf_release.a
+#   exofmsrt++: OBJECT library
 #
 # Usage:
 #
 #   include_directories(${MINICHEM_INCLUDE_DIR})
-#   target_link_libraries(exofmsck::exofmsckf exofmsck::exofmsck++)
+#   target_link_libraries(exofmsrt::exofmsrtf exofmsrt::exofmsrt++)
 
 cmake_minimum_required(VERSION 3.18)
 set(CMAKE_CXX_STANDARD 17)
@@ -14,7 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(
-  exofmsck++
+  exofmsrt
   LANGUAGES CXX Fortran
   DESCRIPTION "C++ interface to the ExoFMS-CK library"
   )
@@ -40,9 +40,10 @@ message(STATUS "2. Set up source codes ...")
 add_subdirectory(src)
 add_subdirectory(interface)
 
-set(MINICHEM_INCLUDE_DIR 
+string(TOUPPER ${PROJECT_NAME} project)
+set(${project}_INCLUDE_DIR 
   "${CMAKE_CURRENT_SOURCE_DIR}"
-  CACHE PATH "Path to exofmsck include directory")
+  CACHE PATH "Path to project include directory")
 
 message(STATUS "3. Set up unit tests ...")
-#add_subdirectory(tests)
+add_subdirectory(tests)

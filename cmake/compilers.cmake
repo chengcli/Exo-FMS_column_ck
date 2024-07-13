@@ -11,6 +11,11 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
     message(FATAL_ERROR "Unknown build type: ${CMAKE_BUILD_TYPE}")
   endif()
 
+  set(F2C_FEXPAND1 "fname ## _"
+    CACHE INTERNAL "Fortran name mangling macro 1")
+  set(F2C_FEXPAND2 "__ ## mname ## _MOD_ ## fname"
+    CACHE INTERNAL "Fortran name mangling macro")
+
   set(KNOWN_FORTRAN_COMPILER TRUE)
 endif()
 
@@ -70,6 +75,11 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
   else()
     message(FATAL_ERROR "Unknown build type: ${CMAKE_BUILD_TYPE}")
   endif()
+
+  set(F2C_FEXPAND1 "fname ## _"
+    CACHE INTERNAL "Fortran name mangling macro 1")
+  set(F2c_FEXPAND2 "mname ## _mp_ ## fname ## _"
+    CACHE INTERNAL "Fortran name mangling macro")
 
   set(KNOWN_FORTRAN_COMPILER TRUE)
 endif()
