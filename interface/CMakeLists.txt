@@ -1,6 +1,7 @@
-# Installs exofmsrt++ interface
+# Compile exofmsrt++ interface
+message(STATUS "Compile the exofmsrt interface code")
 
-set(namel "${PROJECT_NAME}++")
+set(namel "exofmsrt++")
 
 file(GLOB src_files
     *.cpp
@@ -15,7 +16,7 @@ add_library(${namel}_${buildl}
 
 set_target_properties(${namel}_${buildl}
     PROPERTIES
-    COMPILE_FLAGS ${${PROJECT_NAME}_CXX_FLAGS}
+    COMPILE_FLAGS ${EXOFMSRT_CXX_FLAGS}
     )
 
 target_include_directories(${namel}_${buildl}
@@ -24,9 +25,9 @@ target_include_directories(${namel}_${buildl}
     )
 
 target_link_libraries(${namel}_${buildl}
-    ${PROJECT_NAME}::${PROJECT_NAME}f
+    exofmsrt::exofmsrtf
     )
 
-configure_file(${PROJECT_NAME}.h.in ${PROJECT_NAME}.h @ONLY)
+configure_file(exofmsrt.h.in exofmsrt.h @ONLY)
 
-add_library(${PROJECT_NAME}::${namel} ALIAS ${namel}_${buildl})
+add_library(exofmsrt::${namel} ALIAS ${namel}_${buildl})

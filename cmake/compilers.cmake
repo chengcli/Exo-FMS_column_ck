@@ -2,11 +2,11 @@
 #
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(${PROJECT_NAME}_Fortran_FLAGS "-g3 -std=legacy"
-      CACHE INTERNAL "${PROJECT_NAME} Fortran compiler flags")
+    set(EXOFMSRT_Fortran_FLAGS "-g3 -std=legacy"
+      CACHE INTERNAL "EXOFMSRT Fortran compiler flags")
   elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(${PROJECT_NAME}_Fortran_FLAGS "-O3 -pipe -std=legacy"
-      CACHE INTERNAL "${PROJECT_NAME} Fortran compiler flags")
+    set(EXOFMSRT_Fortran_FLAGS "-O3 -pipe -std=legacy"
+      CACHE INTERNAL "EXOFMSRT Fortran compiler flags")
   else()
     message(FATAL_ERROR "Unknown build type: ${CMAKE_BUILD_TYPE}")
   endif()
@@ -21,11 +21,11 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(${PROJECT_NAME}_CXX_FLAGS "-g3"
-      CACHE INTERNAL "${PROJECT_NAME} CXX compiler flags")
+    set(EXOFMSRT_CXX_FLAGS "-g3"
+      CACHE INTERNAL "EXOFMSRT CXX compiler flags")
   elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(${PROJECT_NAME}_CXX_FLAGS "-O3"
-      CACHE INTERNAL "${PROJECT_NAME} CXX compiler flags")
+    set(EXOFMSRT_CXX_FLAGS "-O3"
+      CACHE INTERNAL "EXOFMSRT CXX compiler flags")
   else()
     message(FATAL_ERROR "Unknown build type: ${CMAKE_BUILD_TYPE}")
   endif()
@@ -37,11 +37,11 @@ endif()
 #
 if (CMAKE_Fortran_COMPILER_ID MATCHES "Clang" )
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(${PROJECT_NAME}_Fortran_FLAGS "-g3"
-      CACHE INTERNAL "${PROJECT_NAME} Fortran compiler flags")
+    set(EXOFMSRT_Fortran_FLAGS "-g3"
+      CACHE INTERNAL "EXOFMSRT Fortran compiler flags")
   elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(${PROJECT_NAME}_Fortran_FLAGS "-O3 -pipe"
-      CACHE INTERNAL "${PROJECT_NAME} Fortran compiler flags")
+    set(EXOFMSRT_Fortran_FLAGS "-O3 -pipe"
+      CACHE INTERNAL "EXOFMSRT Fortran compiler flags")
   else()
     message(FATAL_ERROR "Unknown build type: ${CMAKE_BUILD_TYPE}")
   endif()
@@ -51,11 +51,11 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(${PROJECT_NAME}_CXX_FLAGS "-g3"
-      CACHE INTERNAL "${PROJECT_NAME} CXX compiler flags")
+    set(EXOFMSRT_CXX_FLAGS "-g3"
+      CACHE INTERNAL "EXOFMSRT CXX compiler flags")
   elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(${PROJECT_NAME}_CXX_FLAGS "-O3"
-      CACHE INTERNAL "${PROJECT_NAME} CXX compiler flags")
+    set(EXOFMSRT_CXX_FLAGS "-O3"
+      CACHE INTERNAL "EXOFMSRT CXX compiler flags")
   else()
     message(FATAL_ERROR "Unknown build type: ${CMAKE_BUILD_TYPE}")
   endif()
@@ -67,11 +67,11 @@ endif()
 #
 if(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(${PROJECT_NAME}_Fortran_FLAGS "-g3 -stand f95"
-      CACHE INTERNAL "${PROJECT_NAME} Fortran compiler flags")
+    set(EXOFMSRT_Fortran_FLAGS "-g3 -stand f95"
+      CACHE INTERNAL "EXOFMSRT Fortran compiler flags")
   elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(${PROJECT_NAME}_Fortran_FLAGS "-O3 -pipe -stand f95"
-      CACHE INTERNAL "${PROJECT_NAME} Fortran compiler flags")
+    set(EXOFMSRT_Fortran_FLAGS "-O3 -pipe -stand f95"
+      CACHE INTERNAL "EXOFMSRT Fortran compiler flags")
   else()
     message(FATAL_ERROR "Unknown build type: ${CMAKE_BUILD_TYPE}")
   endif()
@@ -86,11 +86,11 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Intel")
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(${PROJECT_NAME}_CXX_FLAGS "-g3"
-      CACHE INTERNAL "${PROJECT_NAME} CXX compiler flags")
+    set(EXOFMSRT_CXX_FLAGS "-g3"
+      CACHE INTERNAL "EXOFMSRT CXX compiler flags")
   elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(${PROJECT_NAME}_CXX_FLAGS "-O3"
-      CACHE INTERNAL "${PROJECT_NAME} CXX compiler flags")
+    set(EXOFMSRT_CXX_FLAGS "-O3"
+      CACHE INTERNAL "EXOFMSRT CXX compiler flags")
   else()
     message(FATAL_ERROR "Unknown build type: ${CMAKE_BUILD_TYPE}")
   endif()

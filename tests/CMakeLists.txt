@@ -1,3 +1,4 @@
+message(STATUS "Compile the exofmsrt test code")
 
 enable_testing()
 create_data_link(FMS_RC.nml)

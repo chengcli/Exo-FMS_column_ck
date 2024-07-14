@@ -6,14 +6,13 @@ macro(setup_test namel)
 
   set_target_properties(${namel}.${buildl}
                         PROPERTIES 
-                        COMPILE_FLAGS ${${PROJECT_NAME}_CXX_FLAGS})
+                        COMPILE_FLAGS ${EXOFMSRT_CXX_FLAGS})
 
-  string(TOUPPER ${PROJECT_NAME} projectu)
   target_include_directories(${namel}.${buildl}
-                             PRIVATE ${${projectu}_INCLUDE_DIR})
+                             PRIVATE ${EXOFMSRT_INCLUDE_DIR})
 
   target_link_libraries(${namel}.${buildl}
-                        ${PROJECT_NAME}::${PROJECT_NAME}++
+                        exofmsrt::exofmsrt++
                         )
   add_test(NAME ${namel}.${buildl} COMMAND ${namel}.${buildl})
 endmacro()

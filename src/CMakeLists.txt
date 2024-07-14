@@ -1,4 +1,5 @@
 # compile the exofmsrt module
+message(STATUS "Compile the exofmsrt source code")
 
 string(TOLOWER ${CMAKE_BUILD_TYPE} buildl)
 string(TOUPPER ${CMAKE_BUILD_TYPE} buildu)
@@ -40,7 +41,7 @@ add_library(${namel}_${buildl}
 
 set_target_properties(${namel}_${buildl}
     PROPERTIES
-    COMPILE_FLAGS ${${PROJECT_NAME}_Fortran_FLAGS}
+    COMPILE_FLAGS ${EXOFMSRT_Fortran_FLAGS}
     )
 
 target_link_libraries(${namel}_${buildl}
